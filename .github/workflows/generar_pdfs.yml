@@ -1,0 +1,56 @@
+name: Actualizar PDF de Panorama Económico
+
+# El proceso se disparará automáticamente cuando subas cambios a la rama principal
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/**'                 # Corre si actualizas la carpeta de datos
+      - 'dash_v3.py'              # Corre si modificas el dashboard principal
+      - 'scripts/generar_pdf.py'  # Corre si modificas el bot de impresión
+  workflow_dispatch:              # Botón manual en Github Actions
+
+jobs:
+  generar-pdf:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependencias del Dashboard y Playwright
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt playwright
+          playwright install chromium --with-deps
+
+      - name: Levantar Streamlit en segundo plano
+        run: |
+          # Levanta dash_v3.py en el puerto 8501 y lo manda a background
+          streamlit run dash_v3.py --server.port 8501 --server.headless true &
+          
+          # Espera unos segundos para asegurar que el servidor levantó
+          sleep 10 
+
+      - name: Ejecutar script de generación
+        run: |
+          # Ejecuta el generador apuntando a la ruta que me indicaste
+          python scripts/generar_pdf.py
+
+      - name: Hacer Commit y Push del nuevo PDF
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add panorama_economico.pdf
+          
+          # Solo hace commit si hay cambios reales en el PDF final
+          git commit -m "🤖 Auto-actualización del PDF por cambios en datos o script" || echo "No hay cambios para hacer commit"
+          git push
