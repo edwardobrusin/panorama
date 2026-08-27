@@ -1020,16 +1020,16 @@ if CUADROS["finanzas"] is not None:
     html_tabla = f"""<div class="metric-container card-hover" style="overflow-x:auto; padding: 0; margin-bottom: 4px;">
 <table class="tabla-manual" style="margin: 0; width: 100%;">
 <colgroup>
-    <col style="width:16%;"> <!-- % del PIB -->
+    <col style="width:16.5%;"> <!-- % del PIB -->
     <col style="width:7.5%;">  <!-- 2019 -->
     <col style="width:7.5%;">  <!-- 2020 -->
     <col style="width:7.5%;">  <!-- 2021 -->
     <col style="width:7.5%;">  <!-- 2022 -->
     <col style="width:7.5%;">  <!-- 2023 -->
     <col style="width:7.5%;">  <!-- 2024 -->
-    <col style="width:9.5%;">  <!-- 2025 Aprob -->
+    <col style="width:9.25%;">  <!-- 2025 Aprob -->
     <col style="width:10%;">  <!-- 2025 Obs -->
-    <col style="width:9.5%;">  <!-- 2026 Aprob -->
+    <col style="width:9.25%;">  <!-- 2026 Aprob -->
     <col style="width:10%;">  <!-- 2026 Est -->
 </colgroup>
 <thead>
