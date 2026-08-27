@@ -37,8 +37,8 @@ jobs:
           # Levanta dash_v3.py y manda los logs a un archivo temporal para capturar errores
           streamlit run dash_v3.py --server.port 8501 --server.headless true > streamlit_logs.txt 2>&1 &
           
-          # Aumentamos el tiempo de espera a 20s (los servidores de GitHub pueden ser más lentos)
-          sleep 20 
+          # Aumentamos el tiempo de espera a 10s (los servidores de GitHub pueden ser más lentos)
+          sleep 10 
           
           # Imprimimos los logs en la consola para ver qué está pasando con Streamlit
           cat streamlit_logs.txt 
