@@ -34,11 +34,14 @@ jobs:
 
       - name: Levantar Streamlit en segundo plano
         run: |
-          # Levanta dash_v3.py en el puerto 8501 y lo manda a background
-          streamlit run dash_v3.py --server.port 8501 --server.headless true &
+          # Levanta dash_v3.py y manda los logs a un archivo temporal para capturar errores
+          streamlit run dash_v3.py --server.port 8501 --server.headless true > streamlit_logs.txt 2>&1 &
           
-          # Espera unos segundos para asegurar que el servidor levantó
-          sleep 10 
+          # Aumentamos el tiempo de espera a 20s (los servidores de GitHub pueden ser más lentos)
+          sleep 20 
+          
+          # Imprimimos los logs en la consola para ver qué está pasando con Streamlit
+          cat streamlit_logs.txt 
 
       - name: Ejecutar script de generación
         run: |
