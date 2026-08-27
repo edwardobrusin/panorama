@@ -458,12 +458,26 @@ st.markdown("""
     .main-header {
         background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #2596be 100%);
         border-radius: 16px;
-        padding: 7px 32px;       /* banner comprimido a la mitad con márgenes simétricos */
-        margin-bottom: 14px;     /* antes 28px: menos aire debajo */
+        padding-top: 20px;       /* <-- Controla el espacio superior interno */
+        padding-bottom: 20px;    /* <-- Controla el espacio inferior interno (igual para simetría) */
+        padding-left: 32px;
+        padding-right: 32px;
+        margin-bottom: 14px;
         color: white;
     }
-    .main-header h1 { color: white !important; margin-bottom: 4px !important; }
-    .main-header .subtitle { color: #CBD5E1; font-size: 1rem; }
+    .main-header h1 { 
+        color: white !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+        line-height: 1.1 !important; 
+    }
+    .main-header .subtitle { 
+        color: #CBD5E1; 
+        font-size: 0.95rem; 
+        margin: 2px 0 0 0 !important; 
+        padding: 0 !important; 
+        line-height: 1.1 !important; 
+    }
     .main-header .fecha-chip {
         display: inline-block;
         background-color: rgba(255,255,255,0.15);
@@ -471,7 +485,7 @@ st.markdown("""
         border-radius: 20px;
         font-size: 0.85rem;
         font-weight: 600;
-        margin-top: 10px;
+        margin-top: 0; /* Removido para mantener el centrado vertical perfecto */
     }
 
     /* --- Tablas manuales estilizadas --- */
@@ -639,11 +653,11 @@ else:
 fecha_revision = "25 de Agosto de 2026"
 st.markdown(f"""
 <div class="main-header" style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-        <h1 style="margin: 0; font-size: 1.6rem;">Panorama Económico</h1>
-        <div class="subtitle" style="font-size: 1rem; margin-top: 2px;">Principales Variables</div>
+    <div style="display: flex; flex-direction: column; justify-content: center;">
+        <h1 style="font-size: 1.6rem; margin: 0; padding: 0;">Panorama Económico</h1>
+        <div class="subtitle" style="margin-top: 2px;">Principales Variables</div>
     </div>
-    <div style="text-align: right;">
+    <div style="text-align: right; display: flex; align-items: center;">
         <div class="fecha-chip" style="margin: 0; font-weight: 500;">Fecha de revisión: {fecha_revision}</div>
     </div>
 </div>
@@ -1003,8 +1017,21 @@ if CUADROS["finanzas"] is not None:
     sub_th = "background-color:#1E293B; font-weight:600; color:#CBD5E1; font-size:0.75rem; border-top:1px solid #334155; text-align:center;"
     
     # Construcción del thead con rowspan y colspan
-    html_tabla = f"""<div class="metric-container card-hover" style="overflow-x:auto; padding: 0;">
+    html_tabla = f"""<div class="metric-container card-hover" style="overflow-x:auto; padding: 0; margin-bottom: 4px;">
 <table class="tabla-manual" style="margin: 0; width: 100%;">
+<colgroup>
+    <col style="width:16%;"> <!-- % del PIB -->
+    <col style="width:7.5%;">  <!-- 2019 -->
+    <col style="width:7.5%;">  <!-- 2020 -->
+    <col style="width:7.5%;">  <!-- 2021 -->
+    <col style="width:7.5%;">  <!-- 2022 -->
+    <col style="width:7.5%;">  <!-- 2023 -->
+    <col style="width:7.5%;">  <!-- 2024 -->
+    <col style="width:9.5%;">  <!-- 2025 Aprob -->
+    <col style="width:10%;">  <!-- 2025 Obs -->
+    <col style="width:9.5%;">  <!-- 2026 Aprob -->
+    <col style="width:10%;">  <!-- 2026 Est -->
+</colgroup>
 <thead>
     <tr>
         <th rowspan="2" style="vertical-align:middle;">% del PIB</th>
@@ -1014,8 +1041,8 @@ if CUADROS["finanzas"] is not None:
     </tr>
     <tr>
         <th colspan="6" style="{sub_th}">Cierre</th>
-        <th style="{sub_th}">Aprob.</th><th style="{sub_th}">Observado</th>
-        <th style="{sub_th}">Aprob.</th><th style="{sub_th}">Estimado</th>
+        <th style="{sub_th}">Aprob.</th><th style="{sub_th}">Observ.</th>
+        <th style="{sub_th}">Aprob.</th><th style="{sub_th}">Estim.</th>
     </tr>
 </thead>
 <tbody>{tbody_html}</tbody>
@@ -1023,8 +1050,7 @@ if CUADROS["finanzas"] is not None:
 </div>"""
 
     st.markdown(html_tabla, unsafe_allow_html=True)
-    st.caption("Fuente: Informe sobre la situación económica, las finanzas públicas y la deuda "
-               "pública, SHCP (4T25 y 1er trimestre 2026).")
+    st.markdown("<div style='font-size: 0.7rem; color: #94A3B8; margin-left: 8px; line-height: 1.2;'>Fuente: Informe sobre la situación económica, las finanzas públicas y la deuda pública, SHCP (4T25 y 1er trimestre 2026).</div>", unsafe_allow_html=True)
 else:
     st.warning("No se encontró `data/manual/cuadros.xlsx` (hoja `finanzas`).")
 
@@ -1062,8 +1088,20 @@ if CUADROS["pemex"] is not None:
 <tr><td style="{td_ind}">Deuda financiera</td><td>{c(r2[0])}</td><td>{c(r2[1])}</td><td>{c(r2[2])}</td><td>{c(r2[3])}</td><td>{c(r2[4])}</td><td>{c(r2[5])}</td><td>{c(r2[6])}</td><td>{c(r2[7])}</td><td>{c(r2[8])}</td></tr>
 <tr><td style="{td_ind}">Monetización pagarés del Gob. Federal</td><td>{c(r3[0])}</td><td>{c(r3[1])}</td><td>{c(r3[2])}</td><td>{c(r3[3])}</td><td>{c(r3[4])}</td><td>{c(r3[5])}</td><td>{c(r3[6])}</td><td>{c(r3[7])}</td><td>{c(r3[8])}</td></tr>"""
 
-    html_tabla = f"""<div class="metric-container card-hover" style="overflow-x:auto; padding: 0;">
+    html_tabla = f"""<div class="metric-container card-hover" style="overflow-x:auto; padding: 0; margin-bottom: 4px;">
 <table class="tabla-manual" style="margin: 0; width: 100%;">
+<colgroup>
+    <col style="width:23.5%;"> <!-- Indicador -->
+    <col style="width:8.5%;">  <!-- 2018 -->
+    <col style="width:8.5%;">  <!-- 2019 -->
+    <col style="width:8.5%;">  <!-- 2020 -->
+    <col style="width:8.5%;">  <!-- 2021 -->
+    <col style="width:8.5%;">  <!-- 2022 -->
+    <col style="width:8.5%;">  <!-- 2023 -->
+    <col style="width:8.5%;">  <!-- 2024 -->
+    <col style="width:8.5%;">  <!-- 2025 -->
+    <col style="width:8.5%;">  <!-- 2026 -->
+</colgroup>
 <thead>
     <tr>
         <th>Indicador</th>
@@ -1076,8 +1114,7 @@ if CUADROS["pemex"] is not None:
 
     st.markdown(html_tabla, unsafe_allow_html=True)
     
-    # Se utilizan dos espacios al final de cada línea en el string para forzar el salto de línea en Markdown
-    st.caption("Fuente: Presentación a Inversionistas, Pemex (abril, 2026). ¹ Incluye producción de socios. ² Para los años 2018 a 2025 son cifras de estados financieros auditados. Para 2026 son cifras preliminares al 31 de marzo de 2026.")
+    st.markdown("<div style='font-size: 0.7rem; color: #94A3B8; margin-left: 8px; line-height: 1.2;'>Fuente: Presentación a Inversionistas, Pemex (abril, 2026). ¹ Incluye producción de socios. ² Para los años 2018 a 2025 son cifras de estados financieros auditados. Para 2026 son cifras preliminares al 31 de marzo de 2026.</div>", unsafe_allow_html=True)
 else:
     st.warning("No se encontró `data/manual/cuadros.xlsx` (hoja `pemex`).")
 
