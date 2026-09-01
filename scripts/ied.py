@@ -5,7 +5,7 @@ import pandas as pd
 # 1. CONFIGURACIÓN DEL ARCHIVO
 # ==========================================
 # Modifica el nombre del archivo aquí cuando cambie el trimestre/año
-NOMBRE_ARCHIVO_IED = "2026_1T_Flujos_TI_OR_2.xlsx"
+NOMBRE_ARCHIVO_IED = "2026_2T_Flujos_TI_OR_2.xlsx"
 
 # ==========================================
 # 2. CONFIGURACIÓN DE RUTAS DINÁMICAS
