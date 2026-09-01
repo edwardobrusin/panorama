@@ -650,7 +650,7 @@ else:
 # ==========================================================================
 # 3. HEADER PRINCIPAL
 # ==========================================================================
-fecha_revision = "27 de Agosto de 2026"
+fecha_revision = "01 de septiembre de 2026"
 st.markdown(f"""
 <div class="main-header" style="display: flex; justify-content: space-between; align-items: center;">
     <div style="display: flex; flex-direction: column; justify-content: center;">
